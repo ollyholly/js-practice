@@ -3,12 +3,27 @@
 const fs = require("fs");
 // const util = require("util");
 
+// Promise. Option 2 with promisify
+// const lstat = util.promisify(fs.lstat);
+
+// Promise. Option 3 with promise API
+const { lstat } = fs.promises;
+
 // using cwd command
-fs.readdir(process.cwd(), (err, filenames) => {
+fs.readdir(process.cwd(), async (err, filenames) => {
   if (err) {
     throw new Error(err);
   }
-  console.log(filenames);
+  // console.log(filenames);
+
+  for (let filename of filenames) {
+    try {
+      const stats = await lstat(filename);
+      console.log(filename, stats.isFile());
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   // Promise. Option 1
   // const lstat = filename => {
@@ -21,13 +36,6 @@ fs.readdir(process.cwd(), (err, filenames) => {
   //     });
   //   });
   // };
-
-  // Promise. Option 2 with promisify
-  // const lstat = util.promisify(fs.lstat);
-
-  // Promise. Option 3 with promise API
-  const { lstat } = fs.promises;
-  // const lstat  = fs.promises.lstat;
 
   // Possible but not optimal solution using array, filling it untill everything is ready.
 

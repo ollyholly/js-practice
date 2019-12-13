@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+const chalk = require("chalk");
 // const util = require("util");
 
 // Promise. Option 2 with promisify
@@ -8,6 +9,8 @@ const fs = require("fs");
 
 // Promise. Option 3 with promise API
 const { lstat } = fs.promises;
+
+console.log(process.argv);
 
 // using cwd command
 fs.readdir(process.cwd(), async (err, filenames) => {
@@ -23,7 +26,12 @@ fs.readdir(process.cwd(), async (err, filenames) => {
 
   for (let stats of allStats) {
     const index = allStats.indexOf(stats);
-    console.log(filenames[index], stats.isFile());
+
+    if (stats.isFile()) {
+      console.log(chalk.yellow(filenames[index]));
+    } else {
+      console.log(chalk.green(filenames[index]));
+    }
   }
 
   // console.log(filenames);

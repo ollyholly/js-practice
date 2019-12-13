@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/ollyholly/js-practice/issues"
   },
-  "homepage": "https://github.com/ollyholly/js-practice#readme"
+  "homepage": "https://github.com/ollyholly/js-practice#readme",
+  "dependencies": {
+    "chalk": "^3.0.0"
+  }
 }

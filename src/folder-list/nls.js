@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+// const util = require("util");
+
+// const lstat = util.promisify(fs.lstat);
 
 // using cwd command
 fs.readdir(process.cwd(), (err, filenames) => {
@@ -9,30 +12,44 @@ fs.readdir(process.cwd(), (err, filenames) => {
   }
   console.log(filenames);
 
+  // Promise. Option 1
+  const lstat = filename => {
+    return new Promise((resolve, reject) => {
+      fs.lstat(filename, (err, stats) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(lstat);
+      });
+    });
+  };
+
+  // Promise. Option 2 with promisify
+
   // Possible but not optimal solution using array, filling it untill everything is ready.
 
-  const allStats = Array(filenames.length).fill(null);
+  //   const allStats = Array(filenames.length).fill(null);
 
-  for (let filename of filenames) {
-    const index = filenames.indexOf(filename);
+  //   for (let filename of filenames) {
+  //     const index = filenames.indexOf(filename);
 
-    fs.lstat(filename, (err, stats) => {
-      if (err) {
-        console.log(err);
-      }
+  //     fs.lstat(filename, (err, stats) => {
+  //       if (err) {
+  //         console.log(err);
+  //       }
 
-      allStats[index] = stats;
-      const ready = allStats.every(stats => {
-        return stats;
-      });
+  //       allStats[index] = stats;
+  //       const ready = allStats.every(stats => {
+  //         return stats;
+  //       });
 
-      if (ready) {
-        allStats.forEach(() => {
-          console.log(filenames[index], stats.isFile());
-        });
-      }
-    });
-  }
+  //       if (ready) {
+  //         allStats.forEach(() => {
+  //           console.log(filenames[index], stats.isFile());
+  //         });
+  //       }
+  //     });
+  //   }
 });
 
 //optional readdir call using "."

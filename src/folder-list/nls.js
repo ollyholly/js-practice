@@ -2,7 +2,8 @@
 
 const fs = require("fs");
 const chalk = require("chalk");
-// const util = require("util");
+const util = require("util");
+const path = require("path");
 
 // Promise. Option 2 with promisify
 // const lstat = util.promisify(fs.lstat);
@@ -10,16 +11,16 @@ const chalk = require("chalk");
 // Promise. Option 3 with promise API
 const { lstat } = fs.promises;
 
-console.log(process.argv);
+const targetDir = process.argv[2] || process.cwd();
 
 // using cwd command
-fs.readdir(process.cwd(), async (err, filenames) => {
+fs.readdir(targetDir, async (err, filenames) => {
   if (err) {
     console.log(err);
   }
 
   const statPromises = filenames.map(filename => {
-    return lstat(filename);
+    return lstat(path.join(targetDir, filename));
   });
 
   const allStats = await Promise.all(statPromises);

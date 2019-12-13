@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
-// const util = require("util");
+const util = require("util");
 
-// const lstat = util.promisify(fs.lstat);
+const lstat = util.promisify(fs.lstat);
 
 // using cwd command
 fs.readdir(process.cwd(), (err, filenames) => {
@@ -13,18 +13,19 @@ fs.readdir(process.cwd(), (err, filenames) => {
   console.log(filenames);
 
   // Promise. Option 1
-  const lstat = filename => {
-    return new Promise((resolve, reject) => {
-      fs.lstat(filename, (err, stats) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(lstat);
-      });
-    });
-  };
+  // const lstat = filename => {
+  //   return new Promise((resolve, reject) => {
+  //     fs.lstat(filename, (err, stats) => {
+  //       if (err) {
+  //         reject(err);
+  //       }
+  //       resolve(lstat);
+  //     });
+  //   });
+  // };
 
   // Promise. Option 2 with promisify
+  const lstat = util.promisify(fs.lstat);
 
   // Possible but not optimal solution using array, filling it untill everything is ready.
 

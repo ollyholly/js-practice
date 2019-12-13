@@ -12,30 +12,31 @@ const { lstat } = fs.promises;
 // using cwd command
 fs.readdir(process.cwd(), async (err, filenames) => {
   if (err) {
-    throw new Error(err);
+    console.log(err);
   }
+
+  const statPromises = filenames.map(filename => {
+    return lstat(filename);
+  });
+
+  const allStats = await Promise.all(statPromises);
+
+  for (let stats of allStats) {
+    const index = allStats.indexOf(stats);
+    console.log(filenames[index], stats.isFile());
+  }
+
   // console.log(filenames);
 
-  for (let filename of filenames) {
-    try {
-      const stats = await lstat(filename);
-      console.log(filename, stats.isFile());
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  // for (let filename of filenames) {
+  //   try {
+  //     const stats = await lstat(filename);
 
-  // Promise. Option 1
-  // const lstat = filename => {
-  //   return new Promise((resolve, reject) => {
-  //     fs.lstat(filename, (err, stats) => {
-  //       if (err) {
-  //         reject(err);
-  //       }
-  //       resolve(lstat);
-  //     });
-  //   });
-  // };
+  //     console.log(filename, stats.isFile());
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   // Possible but not optimal solution using array, filling it untill everything is ready.
 
@@ -62,6 +63,19 @@ fs.readdir(process.cwd(), async (err, filenames) => {
   //     });
   //   }
 });
+
+// Promise. Option 1
+// const lstat = filename => {
+//   return new Promise((resolve, reject) => {
+//     fs.lstat(filename, (err, stats) => {
+//       if (err) {
+//         reject(err);
+//       }
+
+//       resolve(stats);
+//     });
+//   });
+// };
 
 //optional readdir call using "."
 // fs.readdir(".", (err, filenames) => {

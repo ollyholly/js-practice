@@ -22,8 +22,12 @@
 // firstReq.send();
 // console.log('Request Sent!');
 
-fetch("https://swapi.co/api/planets/")
+fetch("https://swapi.co/api/planetssssss/")
   .then(response => {
+    if (!response.ok) {
+      throw new Error(`Status Code Error: ${response.status}`);
+    }
+
     response.json().then(data => {
       for (let planet of data.results) {
         console.log(planet.name);
@@ -34,19 +38,3 @@ fetch("https://swapi.co/api/planets/")
     console.log("Problems with Fetch!");
     console.log(err);
   });
-
-// fetch('https://swapi.co/api/planetsuy21/')
-// 	.then((response) => {
-// 		if (!response.ok)
-// 			throw new Error(`Status Code Error: ${response.status}`);
-
-// 		response.json().then((data) => {
-// 			for (let planet of data.results) {
-// 				console.log(planet.name);
-// 			}
-// 		});
-// 	})
-// 	.catch((err) => {
-// 		console.log('SOMETHING WENT WRONG WITH FETCH!');
-// 		console.log(err);
-// 	});
